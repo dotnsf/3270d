@@ -1,0 +1,36 @@
+{
+  "server": {
+    "port": 23000,
+    "host": "0.0.0.0",
+    "maxConnections": 2,
+    "connectionTimeout": 300000,
+    "idleTimeout": 600000
+  },
+  "terminal": {
+    "rows": 24,
+    "cols": 80,
+    "terminalType": "IBM-3279-2-E",
+    "codePage": "cp037",
+    "japaneseCodePage": "cp939"
+  },
+  "auth": {
+    "enabled": true,
+    "maxRetries": 3,
+    "allowedUsers": [],
+    "deniedUsers": ["root"],
+    "requireGroup": null
+  },
+  "pty": {
+    "shell": "/bin/bash",
+    "env": {
+      "TERM": "xterm-256color",
+      "LANG": "ja_JP.UTF-8"
+    }
+  },
+  "logging": {
+    "level": "info",
+    "file": "/var/log/3270d/server.log",
+    "maxSize": "10m",
+    "maxFiles": 5
+  }
+}
