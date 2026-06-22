@@ -89,6 +89,12 @@ x3270 localhost:8023
 - **[IMPLEMENTATION.md](IMPLEMENTATION.md)** - 実装ガイドとモジュール仕様
 - **[TESTING.md](TESTING.md)** - テスト計画とテストケース
 
+### 運用ガイド
+
+- **[docs/JAPANESE_SUPPORT.md](docs/JAPANESE_SUPPORT.md)** - 日本語対応ドキュメント
+- **[docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md)** - テスト実行ガイド
+- **[docs/WSL_SETUP.md](docs/WSL_SETUP.md)** - WSL環境セットアップガイド
+
 ### 開発ガイド
 
 設計ドキュメントを参照して実装を進めてください。各ドキュメントには以下の情報が含まれています：
