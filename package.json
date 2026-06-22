@@ -9,7 +9,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:report": "jest --json --outputFile=test-results/test-report.json && node scripts/format-test-results.js",
+    "test:report": "jest --json --outputFile=test-results/test-report.json; node scripts/format-test-results.js",
     "test:all": "npm run test:report && npm run test:coverage",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix"

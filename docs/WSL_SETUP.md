@@ -4,20 +4,94 @@
 
 このドキュメントでは、WSL環境で3270dを実行するための手順を説明します。
 
+## 重要: Node.jsのバージョンについて
+
+**Node.js v24は新しすぎて、WSLの古いg++コンパイラと互換性がありません。**
+
+### 推奨バージョン
+
+- **Node.js v18.x** (LTS) - 推奨
+- **Node.js v20.x** (LTS) - 動作確認済み
+
+### 現在のバージョン確認
+
+```bash
+node --version
+```
+
+`v24.x.x`と表示される場合は、Node.jsをダウングレードする必要があります。
+
+## Node.jsのダウングレード手順
+
+### 方法1: nvmを使用（推奨）
+
+```bash
+# nvmをインストール（未インストールの場合）
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+# シェルを再起動
+source ~/.bashrc
+
+# Node.js 18 LTSをインストール
+nvm install 18
+
+# Node.js 18を使用
+nvm use 18
+
+# デフォルトに設定
+nvm alias default 18
+
+# バージョン確認
+node --version  # v18.x.x と表示されるはず
+```
+
+### 方法2: 直接インストール
+
+```bash
+# 既存のNode.jsを削除
+sudo apt-get remove nodejs
+sudo apt-get purge nodejs
+sudo apt-get autoremove
+
+# Node.js 18をインストール
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+
+# バージョン確認
+node --version  # v18.x.x と表示されるはず
+```
+
 ## 問題と解決策
 
-### PAM認証モジュールのビルドエラー
+### ネイティブモジュールのビルドエラー
 
-WSL環境では、`authenticate-pam`パッケージのビルドに失敗する場合があります。これは、WSLのg++コンパイラが古く、C++20をサポートしていないためです。
+WSL環境では、`node-pty`や`authenticate-pam`などのネイティブモジュールのビルドに失敗する場合があります。
 
 **エラーメッセージ例:**
 ```
 g++: error: unrecognized command line option '-std=gnu++20'
 ```
 
+**原因:**
+- WSLのg++コンパイラが古く、C++20をサポートしていない
+- Node.js v24が新しすぎて、古いコンパイラと互換性がない
+
 **解決策:**
 
-3270dは、PAM認証をオプショナル依存関係として扱うように設計されています。PAMモジュールがインストールできない場合でも、開発モードで動作します。
+1. **Node.jsをv18にダウングレード**（上記参照）
+2. **g++を更新**（オプション）
+
+```bash
+# g++のバージョン確認
+g++ --version
+
+# g++-10以上が必要
+sudo apt-get update
+sudo apt-get install -y g++-10
+
+# デフォルトのg++を更新
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
+```
 
 ## セットアップ手順
 
@@ -173,6 +247,70 @@ npm start
 ```bash
 # 別のポートを使用
 PORT=8023 npm start
+
+### エラー: `g++: error: unrecognized command line option '-std=gnu++20'`
+
+**原因**: Node.js v24が新しすぎて、WSLの古いg++コンパイラと互換性がありません。
+
+**解決方法**:
+```bash
+# Node.jsをv18にダウングレード（推奨）
+nvm install 18
+nvm use 18
+nvm alias default 18
+
+# node_modulesを削除して再インストール
+rm -rf node_modules package-lock.json
+npm install
+```
+
+### npm installが非常に遅い
+
+**原因**: Windowsファイルシステム（/mnt/c/）上でnpm installを実行すると非常に遅くなります。
+
+**解決方法**:
+```bash
+# WSLのネイティブファイルシステムにプロジェクトを移動
+cd ~
+git clone <repository-url>
+cd 3270d
+npm install
+```
+
+### x3270/c3270で接続できない
+
+**確認事項**:
+
+1. サーバーが起動しているか確認
+```bash
+ps aux | grep node
+```
+
+2. ポートがリッスンしているか確認
+```bash
+netstat -tuln | grep 23000
+```
+
+3. ファイアウォールの確認
+```bash
+sudo ufw status
+```
+
+4. 接続テスト
+```bash
+telnet localhost 23000
+```
+
+## まとめ
+
+WSL環境で3270dを実行する際の重要なポイント：
+
+1. **Node.js v18を使用する**（v24は新しすぎる）
+2. **開発モードで実行する**（PAM認証は不要）
+3. **WSLのネイティブファイルシステムを使用する**（/mnt/c/は避ける）
+4. **カスタムポートを使用する**（23000がブロックされている場合）
+
+これらの手順に従えば、WSL環境でも3270dを問題なく実行できます。
 ```
 
 ### WSLでのPTY動作確認

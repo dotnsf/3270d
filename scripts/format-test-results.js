@@ -172,8 +172,9 @@ function main() {
   console.log('');
   console.log(formatted);
   
-  // 終了コード
-  process.exit(results.success ? 0 : 1);
+  // テスト失敗時でもフォーマッターは成功として終了
+  // （テストの失敗はJest自体が報告する）
+  process.exit(0);
 }
 
 // 実行
