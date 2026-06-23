@@ -225,6 +225,9 @@ class TerminalHandler {
       command
     });
     
+    // 画面をクリア（コマンド実行前）
+    this.screenBuffer.clear();
+    
     // PTYにコマンドを送信
     if (this.pty) {
       this.pty.write(command + '\n');
