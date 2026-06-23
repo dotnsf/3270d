@@ -347,8 +347,13 @@ class TerminalHandler {
       length: data.length
     });
     
+    // Bufferを文字列に変換
+    const text = typeof data === 'string' ? data : data.toString('utf8');
+    
     // UTF-8データを画面バッファに書き込み
-    this.screenBuffer.writeString(data);
+    // カーソル位置から書き込み
+    const cursor = this.screenBuffer.getCursor();
+    this.screenBuffer.writeString(cursor.row, cursor.col, text);
     
     // 画面を更新
     const screen = this.renderScreen();
