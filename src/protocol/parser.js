@@ -5,11 +5,13 @@
 const { Orders, AID, isOrder } = require('./data-stream');
 const BufferAddress = require('./buffer-address');
 const FieldAttribute = require('./field-attribute');
+const Converter = require('../charset/converter');
 const logger = require('../logger');
 
 class DataStreamParser {
   constructor() {
     this.buffer = Buffer.alloc(0);
+    this.converter = new Converter();
   }
 
   /**
@@ -69,10 +71,12 @@ class DataStreamParser {
             }
 
             if (fieldData.length > 0) {
+              const dataBuffer = Buffer.from(fieldData);
               fields.push({
                 address: addr,
                 position: BufferAddress.toRowCol(addr),
-                data: Buffer.from(fieldData)
+                data: dataBuffer,
+                value: this.converter.ebcdicToUtf8(dataBuffer)
               });
             }
           } catch (error) {
@@ -106,10 +110,12 @@ class DataStreamParser {
         }
 
         if (fieldData.length > 0) {
+          const dataBuffer = Buffer.from(fieldData);
           fields.push({
             address: null,
             position: null,
-            data: Buffer.from(fieldData)
+            data: dataBuffer,
+            value: this.converter.ebcdicToUtf8(dataBuffer)
           });
         }
       }
