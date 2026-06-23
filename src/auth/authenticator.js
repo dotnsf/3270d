@@ -9,7 +9,7 @@ const logger = require('../logger');
 const PAMAuth = require('./pam-auth');
 const Session = require('./session');
 const DataStreamGenerator = require('../protocol/generator');
-const Parser = require('../protocol/parser');
+const DataStreamParser = require('../protocol/parser');
 const { AID } = require('../protocol/data-stream');
 
 /**
@@ -104,7 +104,8 @@ class Authenticator {
     
     try {
       // データストリームを解析
-      const parsed = Parser.parse(data);
+      const parser = new DataStreamParser();
+      const parsed = parser.parse(data);
       
       logger.debug('Parsed authentication input', {
         connectionId: this.connection.id,
@@ -119,9 +120,10 @@ class Authenticator {
           connectionId: this.connection.id,
           aid: parsed.aid
         });
+        const generator = new DataStreamGenerator();
         return {
           success: false,
-          response: Generator.generateLoginScreen(this.attempts)
+          response: generator.generateLoginScreen()
         };
       }
       
@@ -143,9 +145,10 @@ class Authenticator {
           return await this.handleMaxAttemptsExceeded();
         }
         
+        const generator = new DataStreamGenerator();
         return {
           success: false,
-          response: Generator.generateLoginScreen(this.attempts, 'ユーザー名とパスワードを入力してください')
+          response: generator.generateLoginScreen()
         };
       }
       
@@ -159,10 +162,11 @@ class Authenticator {
         stack: error.stack
       });
       
+      const generator = new DataStreamGenerator();
       return {
         success: false,
         error: error.message,
-        response: Generator.generateErrorScreen('認証処理中にエラーが発生しました')
+        response: generator.generateErrorScreen('認証処理中にエラーが発生しました')
       };
     }
   }

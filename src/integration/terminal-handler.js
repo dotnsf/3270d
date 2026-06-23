@@ -11,8 +11,8 @@ const UserContext = require('../auth/user-context');
 const PTYManager = require('../pty/pty-manager');
 const ScreenBuffer = require('../screen/buffer');
 const Converter = require('../charset/converter');
-const Parser = require('../protocol/parser');
-const Generator = require('../protocol/generator');
+const DataStreamParser = require('../protocol/parser');
+const DataStreamGenerator = require('../protocol/generator');
 const { AID, Commands } = require('../protocol/data-stream');
 
 /**
@@ -95,7 +95,8 @@ class TerminalHandler {
         stack: error.stack
       });
       
-      return Generator.generateErrorScreen('データ処理中にエラーが発生しました');
+      const generator = new DataStreamGenerator();
+      return generator.generateErrorScreen('データ処理中にエラーが発生しました');
     }
   }
   
@@ -261,9 +262,9 @@ class TerminalHandler {
     this.state = TerminalState.CLOSED;
     
     // さようなら画面を表示
-    const goodbyeScreen = Generator.generateWelcomeScreen(
-      this.userContext?.getUsername() || 'ユーザー',
-      'ログアウトしました。\n接続を切断します。'
+    const generator = new DataStreamGenerator();
+    const goodbyeScreen = generator.generateWelcomeScreen(
+      this.userContext?.getUsername() || 'ユーザー'
     );
     
     // 画面表示後、切断
@@ -372,8 +373,9 @@ class TerminalHandler {
     this.state = TerminalState.CLOSED;
     
     // 終了メッセージを表示
-    const exitScreen = Generator.generateWelcomeScreen(
-      this.userContext?.getUsername() || 'ユーザー',
+    const generator = new DataStreamGenerator();
+    const exitScreen = generator.generateWelcomeScreen(
+      this.userContext?.getUsername() || 'ユーザー'
       `シェルが終了しました (終了コード: ${code})\n接続を切断します。`
     );
     
@@ -401,9 +403,9 @@ class TerminalHandler {
     );
     
     // 3270データストリームを生成
-    const screen = Generator.generateEraseWrite(
-      ebcdicContent,
-      this.screenBuffer.getCursor()
+    const generator = new DataStreamGenerator();
+    const screen = generator.generateEraseWrite(
+      this.screenBuffer
     );
     
     this.lastScreen = screen;
