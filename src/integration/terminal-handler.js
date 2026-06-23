@@ -42,7 +42,8 @@ class TerminalHandler {
     
     this.authenticator = new Authenticator(connection);
     this.userContext = null;
-    this.ptyManager = null;
+    this.ptyManager = new PTYManager();
+    this.pty = null;
     this.screenBuffer = new ScreenBuffer();
     
     this.lastScreen = null; // 最後に送信した画面内容
@@ -218,8 +219,8 @@ class TerminalHandler {
     });
     
     // PTYにコマンドを送信
-    if (this.ptyManager) {
-      this.ptyManager.write(command + '\n');
+    if (this.pty) {
+      this.pty.write(command + '\n');
     }
     
     return null;
@@ -255,8 +256,8 @@ class TerminalHandler {
     });
     
     // シェルを終了
-    if (this.ptyManager) {
-      this.ptyManager.kill();
+    if (this.pty) {
+      this.pty.kill();
     }
     
     this.state = TerminalState.CLOSED;
@@ -288,34 +289,30 @@ class TerminalHandler {
       shell: this.userContext.getShell()
     });
     
-    // PTYマネージャーを作成
-    this.ptyManager = new PTYManager();
-    
     // PTYオプションを取得
     const ptyOptions = this.userContext.getPtyOptions();
     
     // シェルを起動
-    await this.ptyManager.spawn(
-      this.userContext.getShell(),
-      [],
-      ptyOptions
-    );
+    this.pty = this.ptyManager.createPTY({
+      shell: this.userContext.getShell(),
+      ...ptyOptions
+    });
     
     // PTY出力を処理
-    this.ptyManager.on('data', (data) => {
+    this.pty.on('data', (data) => {
       this.handlePtyOutput(data);
     });
     
     // PTY終了を処理
-    this.ptyManager.on('exit', (code) => {
-      this.handlePtyExit(code);
+    this.pty.on('exit', (exitCode, signal) => {
+      this.handlePtyExit({ exitCode, signal });
     });
     
     this.state = TerminalState.RUNNING;
     
     logger.info('Shell started', {
       connectionId: this.connection.id,
-      pid: this.ptyManager.getPid()
+      pid: this.pty.pid
     });
   }
   
@@ -427,9 +424,9 @@ class TerminalHandler {
     }
     
     // PTYを終了
-    if (this.ptyManager) {
-      this.ptyManager.kill();
-      this.ptyManager = null;
+    if (this.pty) {
+      this.pty.kill();
+      this.pty = null;
     }
     
     // 画面バッファをクリア
