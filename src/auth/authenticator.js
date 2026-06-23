@@ -218,7 +218,8 @@ class Authenticator {
         });
         
         // ウェルカム画面を生成
-        const welcomeScreen = Generator.generateWelcomeScreen(username);
+        const generator = new DataStreamGenerator();
+        const welcomeScreen = generator.generateWelcomeScreen(username);
         
         return {
           success: true,
@@ -244,9 +245,10 @@ class Authenticator {
         
         this.state = AuthState.LOGIN_SCREEN;
         
+        const generator = new DataStreamGenerator();
         return {
           success: false,
-          response: Generator.generateLoginScreen(
+          response: generator.generateLoginScreen(
             this.attempts,
             'ユーザー名またはパスワードが正しくありません'
           )
@@ -269,10 +271,11 @@ class Authenticator {
       
       this.state = AuthState.LOGIN_SCREEN;
       
+      const generator = new DataStreamGenerator();
       return {
         success: false,
         error: error.message,
-        response: Generator.generateLoginScreen(
+        response: generator.generateLoginScreen(
           this.attempts,
           '認証処理中にエラーが発生しました'
         )
