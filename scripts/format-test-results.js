@@ -114,6 +114,11 @@ function formatTestResults(results) {
     lines.push('');
     
     results.testResults.forEach(suite => {
+      // testResultsが存在しない場合はスキップ
+      if (!suite.testResults || !Array.isArray(suite.testResults)) {
+        return;
+      }
+      
       suite.testResults.forEach(test => {
         if (test.status === 'failed') {
           lines.push(`テスト: ${test.fullName}`);

@@ -118,11 +118,7 @@ class JapaneseHandler {
       const charWidth = this.getCharWidth(char);
       
       if (width + charWidth > maxWidth) {
-        // 全角文字が入らない場合は空白でパディング
-        if (charWidth === 2 && width < maxWidth) {
-          result += ' ';
-          width++;
-        }
+        // 全角文字が入らない場合はそこで終了（パディングしない）
         break;
       }
 

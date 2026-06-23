@@ -120,13 +120,17 @@ class TelnetOptions {
         return { response: Buffer.from([IAC, DO, TERMINAL_TYPE]) };
       } else if (option === BINARY) {
         this.binaryMode = true;
+        this.checkNegotiationComplete();
         return { response: Buffer.from([IAC, DO, BINARY]) };
       } else if (option === EOR) {
         this.eor = true;
+        this.checkNegotiationComplete();
         return { response: Buffer.from([IAC, DO, EOR]) };
       }
     } else if (command === DO) {
       if (option === BINARY) {
+        this.binaryMode = true;
+        this.checkNegotiationComplete();
         return { response: Buffer.from([IAC, WILL, BINARY]) };
       } else if (option === EOR) {
         return { response: Buffer.from([IAC, WILL, EOR]) };
@@ -151,15 +155,20 @@ class TelnetOptions {
         // IS
         this.terminalType = data.slice(1).toString('ascii');
         logger.info(`Terminal type: ${this.terminalType}`);
-
-        // ネゴシエーション完了をチェック
-        if (this.binaryMode && this.eor) {
-          this.negotiationComplete = true;
-        }
+        this.checkNegotiationComplete();
       }
     }
 
     return { response: null };
+  }
+
+  /**
+   * ネゴシエーション完了をチェック
+   */
+  checkNegotiationComplete() {
+    if (this.terminalType && this.binaryMode && this.eor) {
+      this.negotiationComplete = true;
+    }
   }
 
   /**

@@ -46,7 +46,7 @@ describe('Session', () => {
   });
 
   describe('recordActivity', () => {
-    test('should update last activity time and count', () => {
+    test('should update last activity time and count', (done) => {
       const initialActivity = session.lastActivityAt;
       const initialCount = session.activityCount;
 
@@ -56,6 +56,7 @@ describe('Session', () => {
 
         expect(session.lastActivityAt.getTime()).toBeGreaterThan(initialActivity.getTime());
         expect(session.activityCount).toBe(initialCount + 1);
+        done();
       }, 10);
     });
 
