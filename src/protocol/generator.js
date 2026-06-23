@@ -5,6 +5,7 @@
 const { Commands, WCC, Orders } = require('./data-stream');
 const BufferAddress = require('./buffer-address');
 const FieldAttribute = require('./field-attribute');
+const Converter = require('../charset/converter');
 const logger = require('../logger');
 
 class DataStreamGenerator {
@@ -12,6 +13,9 @@ class DataStreamGenerator {
     // Telnet IAC and EOR
     this.IAC = 0xFF;
     this.EOR = 0xEF;
+    
+    // 文字コード変換器
+    this.converter = new Converter();
   }
 
   /**
@@ -307,13 +311,15 @@ class DataStreamGenerator {
   }
 
   /**
-   * テキストを書き込み（ASCIIコード）
+   * テキストを書き込み（EBCDICに変換）
    * @param {Array} stream - 出力ストリーム
    * @param {string} text - テキスト
    */
   writeText(stream, text) {
-    for (let i = 0; i < text.length; i++) {
-      stream.push(text.charCodeAt(i));
+    // UTF-8からEBCDICに変換
+    const ebcdic = this.converter.toEBCDIC(text);
+    for (let i = 0; i < ebcdic.length; i++) {
+      stream.push(ebcdic[i]);
     }
   }
 
