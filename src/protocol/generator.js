@@ -317,7 +317,7 @@ class DataStreamGenerator {
    */
   writeText(stream, text) {
     // UTF-8からEBCDICに変換
-    const ebcdic = this.converter.toEBCDIC(text);
+    const ebcdic = this.converter.utf8ToEbcdic(text);
     for (let i = 0; i < ebcdic.length; i++) {
       stream.push(ebcdic[i]);
     }

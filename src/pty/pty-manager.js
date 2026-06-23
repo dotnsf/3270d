@@ -63,7 +63,7 @@ class PTYManager {
   destroyPTY(pty) {
     if (pty && pty.pid) {
       this.ptys.delete(pty.pid);
-      pty.close();
+      pty.kill();
     }
   }
 
@@ -72,7 +72,7 @@ class PTYManager {
    */
   destroyAll() {
     for (const pty of this.ptys.values()) {
-      pty.close();
+      pty.kill();
     }
     this.ptys.clear();
   }
