@@ -45,6 +45,7 @@ class TerminalHandler {
     this.ptyManager = new PTYManager();
     this.pty = null;
     this.screenBuffer = new ScreenBuffer();
+    this.converter = new Converter();
     
     this.lastScreen = null; // 最後に送信した画面内容
     
@@ -396,15 +397,8 @@ class TerminalHandler {
    * @private
    */
   renderScreen() {
-    // 画面バッファの内容を取得
-    const content = this.screenBuffer.getContent();
-    
-    // UTF-8 → EBCDIC変換
-    const ebcdicContent = content.map(line => 
-      Converter.utf8ToEbcdic(line)
-    );
-    
     // 3270データストリームを生成
+    // DataStreamGeneratorが内部でEBCDIC変換を行う
     const generator = new DataStreamGenerator();
     const screen = generator.generateEraseWrite(
       this.screenBuffer
