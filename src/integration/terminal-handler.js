@@ -212,7 +212,12 @@ class TerminalHandler {
     const command = parsed.fields[0]?.value?.trim() || '';
     
     if (!command) {
-      return null;
+      // 空のEnterキー - 改行だけを送信して画面を再描画
+      if (this.pty) {
+        this.pty.write('\n');
+      }
+      // 現在の画面を返す
+      return this.renderScreen();
     }
     
     logger.debug('Command entered', {
@@ -225,7 +230,8 @@ class TerminalHandler {
       this.pty.write(command + '\n');
     }
     
-    return null;
+    // 画面を再描画
+    return this.renderScreen();
   }
   
   /**
