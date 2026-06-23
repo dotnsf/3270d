@@ -121,6 +121,7 @@ x3270 localhost:8023
 
 ### 運用ガイド
 
+- **[docs/PAM_GUIDE.md](docs/PAM_GUIDE.md)** - PAM認証ガイド（認証の仕組みと設定方法）
 - **[docs/JAPANESE_SUPPORT.md](docs/JAPANESE_SUPPORT.md)** - 日本語対応ドキュメント
 - **[docs/TESTING_GUIDE.md](docs/TESTING_GUIDE.md)** - テスト実行ガイド
 - **[docs/WSL_SETUP.md](docs/WSL_SETUP.md)** - WSL環境セットアップガイド
