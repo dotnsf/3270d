@@ -28,7 +28,8 @@
     "node-pty": "^1.0.0",
     "iconv-lite": "^0.6.3",
     "winston": "^3.11.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "encoding": "^0.1.13"
   },
   "optionalDependencies": {
     "authenticate-pam": "^1.0.0"

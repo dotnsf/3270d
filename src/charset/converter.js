@@ -3,6 +3,11 @@
  * 文字コード変換（EBCDIC ↔ UTF-8）
  */
 const iconv = require('iconv-lite');
+
+// EBCDICエンコーディングのサポートを有効化
+const encodings = require('iconv-lite/encodings');
+iconv.encodings = encodings;
+
 const logger = require('../logger');
 const config = require('../config');
 const japaneseHandler = require('./japanese-handler');
