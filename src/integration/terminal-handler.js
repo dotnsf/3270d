@@ -168,7 +168,8 @@ class TerminalHandler {
    */
   async handleTerminalData(data) {
     // データストリームを解析
-    const parsed = Parser.parse(data);
+    const parser = new DataStreamParser();
+    const parsed = parser.parse(data);
     
     logger.debug('Terminal data received', {
       connectionId: this.connection.id,
