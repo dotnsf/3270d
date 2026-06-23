@@ -350,7 +350,21 @@ class TerminalHandler {
     });
     
     // Bufferを文字列に変換
-    const text = typeof data === 'string' ? data : data.toString('utf8');
+    let text = typeof data === 'string' ? data : data.toString('utf8');
+    
+    // ANSIエスケープシーケンスと制御文字を除去
+    text = text
+      .replace(/\x1b\[[0-9;]*m/g, '')           // 色コード (CSI m)
+      .replace(/\x1b\[[0-9;]*[A-Za-z]/g, '')    // その他のCSIシーケンス
+      .replace(/\x1b\][^\x07]*\x07/g, '')       // OSCシーケンス
+      .replace(/\x1b[=>]/g, '')                 // キーパッドモード
+      .replace(/\x1b\([0B]/g, '')               // 文字セット選択
+      .replace(/[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F]/g, ''); // 制御文字（\t, \n, \r以外）
+    
+    // 空の場合は何もしない
+    if (!text) {
+      return;
+    }
     
     // UTF-8データを画面バッファに書き込み
     // カーソル位置から書き込み

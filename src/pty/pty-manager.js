@@ -16,12 +16,16 @@ class PTYManager {
    */
   createPTY(options = {}) {
     const ptyOptions = {
-      name: 'xterm-256color',
+      name: 'dumb',  // シンプルな端末タイプ（色なし、エスケープシーケンスなし）
       cols: options.cols || config.get('terminal.cols') || 80,
       rows: options.rows || config.get('terminal.rows') || 24,
       cwd: options.cwd || process.env.HOME || '/tmp',
       env: {
         ...process.env,
+        TERM: 'dumb',           // シンプルな端末
+        PS1: '$ ',              // シンプルなプロンプト
+        LANG: 'C',              // ASCII ロケール
+        LC_ALL: 'C',            // ASCII ロケール
         ...config.get('pty.env'),
         ...options.env
       }
