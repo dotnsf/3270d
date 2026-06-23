@@ -40,17 +40,17 @@ class PTYManager {
     try {
       const ptyProcess = pty.spawn(shell, [], ptyOptions);
 
-      const ptyWrapper = new PTY(ptyProcess, ptyOptions);
-      this.ptys.set(ptyWrapper.pid, ptyWrapper);
+      // PTYプロセスを直接返す（ラッパーは不要）
+      this.ptys.set(ptyProcess.pid, ptyProcess);
 
-      logger.info(`PTY created: PID=${ptyWrapper.pid}, shell=${shell}`);
+      logger.info(`PTY created: PID=${ptyProcess.pid}, shell=${shell}`);
 
-      ptyWrapper.on('exit', () => {
-        this.ptys.delete(ptyWrapper.pid);
-        logger.info(`PTY removed: PID=${ptyWrapper.pid}`);
+      ptyProcess.on('exit', () => {
+        this.ptys.delete(ptyProcess.pid);
+        logger.info(`PTY removed: PID=${ptyProcess.pid}`);
       });
 
-      return ptyWrapper;
+      return ptyProcess;
     } catch (error) {
       logger.error('Failed to create PTY:', error);
       throw error;

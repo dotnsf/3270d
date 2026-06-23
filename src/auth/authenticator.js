@@ -8,7 +8,7 @@
 const logger = require('../logger');
 const PAMAuth = require('./pam-auth');
 const Session = require('./session');
-const Generator = require('../protocol/generator');
+const DataStreamGenerator = require('../protocol/generator');
 const Parser = require('../protocol/parser');
 const { AID } = require('../protocol/data-stream');
 
@@ -72,7 +72,8 @@ class Authenticator {
     this.startTimeout();
     
     // ログイン画面を生成
-    const loginScreen = Generator.generateLoginScreen(this.attempts);
+    const generator = new DataStreamGenerator();
+    const loginScreen = generator.generateLoginScreen();
     
     return loginScreen;
   }
