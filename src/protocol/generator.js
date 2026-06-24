@@ -330,15 +330,16 @@ class DataStreamGenerator {
   }
 
   /**
-   * テキストを書き込み（EBCDICに変換）
+   * テキストを書き込み（ASCIIで送信）
+   * TN3270では、多くの実装がテキストをASCIIで送信する
    * @param {Array} stream - 出力ストリーム
    * @param {string} text - テキスト
    */
   writeText(stream, text) {
-    // UTF-8からEBCDICに変換
-    const ebcdic = this.converter.utf8ToEbcdic(text);
-    for (let i = 0; i < ebcdic.length; i++) {
-      stream.push(ebcdic[i]);
+    // UTF-8からASCIIに変換（ASCIIはUTF-8と互換性がある）
+    const ascii = Buffer.from(text, 'utf8');
+    for (let i = 0; i < ascii.length; i++) {
+      stream.push(ascii[i]);
     }
   }
 

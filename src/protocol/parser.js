@@ -76,7 +76,8 @@ class DataStreamParser {
                 address: addr,
                 position: BufferAddress.toRowCol(addr),
                 data: dataBuffer,
-                value: this.converter.ebcdicToUtf8(dataBuffer)
+                // TN3270ではASCIIで送信されることが多い
+                value: dataBuffer.toString('utf8')
               });
             }
           } catch (error) {
