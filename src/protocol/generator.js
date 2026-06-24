@@ -208,12 +208,14 @@ class DataStreamGenerator {
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Username: ');
 
-    // ユーザー名入力フィールド
+    // ユーザー名入力フィールド（20文字分）
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getInput()));
-    this.writeText(stream, ' '.repeat(20));
-
-    // フィールド終了
+    // 入力フィールドは空のまま（初期値なし）
+    
+    // フィールド終了（次のフィールドの開始位置を指定）
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 51))); // 10 + 10 + 20 + 1
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
@@ -224,12 +226,14 @@ class DataStreamGenerator {
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Password: ');
 
-    // パスワード入力フィールド（非表示）
+    // パスワード入力フィールド（非表示、20文字分）
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getHidden()));
-    this.writeText(stream, ' '.repeat(20));
-
-    // フィールド終了
+    // 入力フィールドは空のまま（初期値なし）
+    
+    // フィールド終了（次のフィールドの開始位置を指定）
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 51))); // 10 + 10 + 20 + 1
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
