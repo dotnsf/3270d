@@ -187,78 +187,62 @@ class DataStreamGenerator {
     // WCC: Reset + Restore Keyboard
     stream.push(WCC.RESET | WCC.RESTORE_KEYBOARD);
 
-    // タイトル (行0, 列30) - 保護フィールドとして定義
-    stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(0, 30)));
+    // 最初のフィールド（画面全体を保護フィールドとして開始）
     stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getIntensified()));
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
+
+    // タイトル (行1, 列30)
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(1, 30)));
     this.writeText(stream, 'TN3270 Login');
 
-    // 区切り線 (行2) - 保護フィールドとして定義
-    stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(2, 0)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
-    this.writeText(stream, '='.repeat(80));
-
-    // ユーザー名ラベル (行5, 列10) - 保護フィールドとして定義
+    // ユーザー名ラベル (行5, 列10)
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 10)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
-    this.writeText(stream, 'Username: ');
+    this.writeText(stream, 'Username:');
 
-    // ユーザー名入力フィールド（20文字分）
+    // ユーザー名入力フィールド (行5, 列21)
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 21)));
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getInput()));
-    // 入力フィールドは空のまま（初期値なし）
-    
-    // フィールド終了（次のフィールドの開始位置を指定）
+
+    // フィールド終了 (行5, 列41)
     stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 51))); // 10 + 10 + 20 + 1
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 41)));
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
-    // パスワードラベル (行7, 列10) - 保護フィールドとして定義
+    // パスワードラベル (行7, 列10)
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 10)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
-    this.writeText(stream, 'Password: ');
+    this.writeText(stream, 'Password:');
 
-    // パスワード入力フィールド（非表示、20文字分）
+    // パスワード入力フィールド (行7, 列21)
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 21)));
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getHidden()));
-    // 入力フィールドは空のまま（初期値なし）
-    
-    // フィールド終了（次のフィールドの開始位置を指定）
+
+    // フィールド終了 (行7, 列41)
     stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 51))); // 10 + 10 + 20 + 1
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 41)));
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
-    // 説明 (行10, 列10) - 保護フィールドとして定義
+    // 説明 (行10, 列20)
     stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(10, 10)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(10, 20)));
     this.writeText(stream, 'Press Enter to login');
 
-    // 区切り線 (行22) - 保護フィールドとして定義
-    stream.push(Orders.SBA);
-    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(22, 0)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
-    this.writeText(stream, '='.repeat(80));
-
-    // ステータス行 (行23) - 保護フィールドとして定義
+    // ステータス行 (行23, 列0)
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(23, 0)));
-    stream.push(Orders.SF);
-    stream.push(FieldAttribute.encode(FieldAttribute.getIntensified()));
     this.writeText(stream, 'TN3270 Server v1.0');
 
     // カーソルをユーザー名フィールドに配置
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 21)));
     stream.push(Orders.IC);
 
     // EOR
