@@ -19,6 +19,25 @@ class DataStreamGenerator {
   }
 
   /**
+   * IAC（0xFF）をエスケープ
+   * TN3270データストリーム内のIACは2回送信する必要がある
+   * @param {Array} stream - データストリーム配列
+   * @returns {Buffer} - エスケープ済みバッファ
+   */
+  escapeIAC(stream) {
+    const escaped = [];
+    for (let i = 0; i < stream.length; i++) {
+      const byte = stream[i];
+      escaped.push(byte);
+      // IAC（0xFF）の場合、もう一度追加（ただしEORの直前のIACは除く）
+      if (byte === this.IAC && i < stream.length - 1 && stream[i + 1] !== this.EOR) {
+        escaped.push(this.IAC);
+      }
+    }
+    return Buffer.from(escaped);
+  }
+
+  /**
    * Erase/Write コマンドを生成
    * 画面全体をクリアして新しい内容を書き込む
    * @param {ScreenBuffer} screenBuffer - 画面バッファ
@@ -43,7 +62,7 @@ class DataStreamGenerator {
     // EOR (End of Record)
     stream.push(this.IAC, this.EOR);
 
-    return Buffer.from(stream);
+    return this.escapeIAC(stream);
   }
 
   /**
@@ -80,7 +99,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return Buffer.from(stream);
+    return this.escapeIAC(stream);
   }
 
   /**
@@ -229,7 +248,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return Buffer.from(stream);
+    return this.escapeIAC(stream);
   }
 
   /**
@@ -268,7 +287,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return Buffer.from(stream);
+    return this.escapeIAC(stream);
   }
 
   /**
@@ -307,7 +326,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return Buffer.from(stream);
+    return this.escapeIAC(stream);
   }
 
   /**

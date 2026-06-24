@@ -25,6 +25,8 @@ class TelnetOptions {
     this.buffer = Buffer.alloc(0);
     this.terminalType = null;
     this.binaryMode = false;
+    this.binaryModeClient = false; // クライアント側のバイナリモード
+    this.binaryModeServer = false; // サーバー側のバイナリモード
     this.eor = false;
     this.negotiationComplete = false;
   }
@@ -119,7 +121,9 @@ class TelnetOptions {
         // Terminal Typeを受け入れる
         return { response: Buffer.from([IAC, DO, TERMINAL_TYPE]) };
       } else if (option === BINARY) {
-        this.binaryMode = true;
+        // クライアントがWILL BINARYを送信 = クライアント側のバイナリモード確立
+        this.binaryModeClient = true;
+        logger.info('Client binary mode enabled');
         this.checkNegotiationComplete();
         return { response: Buffer.from([IAC, DO, BINARY]) };
       } else if (option === EOR) {
@@ -129,7 +133,9 @@ class TelnetOptions {
       }
     } else if (command === DO) {
       if (option === BINARY) {
-        this.binaryMode = true;
+        // クライアントがDO BINARYを送信 = サーバー側のバイナリモード確立
+        this.binaryModeServer = true;
+        logger.info('Server binary mode enabled');
         this.checkNegotiationComplete();
         return { response: Buffer.from([IAC, WILL, BINARY]) };
       } else if (option === EOR) {
@@ -166,8 +172,13 @@ class TelnetOptions {
    * ネゴシエーション完了をチェック
    */
   checkNegotiationComplete() {
-    if (this.terminalType && this.binaryMode && this.eor) {
+    // 双方向のバイナリモードが確立されていることを確認
+    if (this.terminalType && this.binaryModeClient && this.binaryModeServer && this.eor) {
       this.negotiationComplete = true;
+      logger.info('TN3270 negotiation complete: Terminal=' + this.terminalType +
+                  ', Binary(C->S)=' + this.binaryModeClient +
+                  ', Binary(S->C)=' + this.binaryModeServer +
+                  ', EOR=' + this.eor);
     }
   }
 
@@ -185,10 +196,16 @@ class TelnetOptions {
 
   /**
    * Binary Modeをリクエスト
+   * RFC 1576に従い、サーバーから順次ネゴシエーション
    */
   requestBinaryMode(socket) {
+    // まずサーバーがWILL BINARYを送信
     socket.write(Buffer.from([IAC, WILL, BINARY]));
-    socket.write(Buffer.from([IAC, DO, BINARY]));
+    
+    // 少し待ってからDO BINARYを送信（クライアントの応答を待つ）
+    setTimeout(() => {
+      socket.write(Buffer.from([IAC, DO, BINARY]));
+    }, 50);
   }
 
   /**
