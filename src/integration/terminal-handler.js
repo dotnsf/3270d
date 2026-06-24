@@ -111,6 +111,14 @@ class TerminalHandler {
    * @private
    */
   async handleAuthenticationData(data) {
+    // デバッグ: 受信データを16進数でログ出力
+    logger.debug('Received authentication data', {
+      connectionId: this.connection.id,
+      length: data.length,
+      hex: data.toString('hex'),
+      first20bytes: data.slice(0, 20).toString('hex')
+    });
+    
     const result = await this.authenticator.handleInput(data);
     
     if (result.success) {
