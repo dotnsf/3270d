@@ -187,19 +187,25 @@ class DataStreamGenerator {
     // WCC: Reset + Restore Keyboard
     stream.push(WCC.RESET | WCC.RESTORE_KEYBOARD);
 
-    // タイトル (行0, 列30)
+    // タイトル (行0, 列30) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(0, 30)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getIntensified()));
     this.writeText(stream, 'TN3270 Login');
 
-    // 区切り線 (行2)
+    // 区切り線 (行2) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(2, 0)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, '='.repeat(80));
 
-    // ユーザー名ラベル (行5, 列10)
+    // ユーザー名ラベル (行5, 列10) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 10)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Username: ');
 
     // ユーザー名入力フィールド
@@ -211,9 +217,11 @@ class DataStreamGenerator {
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
-    // パスワードラベル (行7, 列10)
+    // パスワードラベル (行7, 列10) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 10)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Password: ');
 
     // パスワード入力フィールド（非表示）
@@ -225,17 +233,21 @@ class DataStreamGenerator {
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
-    // 説明 (行10, 列10)
+    // 説明 (行10, 列10) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(10, 10)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Press Enter to login');
 
-    // 区切り線 (行22)
+    // 区切り線 (行22) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(22, 0)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, '='.repeat(80));
 
-    // ステータス行 (行23)
+    // ステータス行 (行23) - 保護フィールドとして定義
     stream.push(Orders.SBA);
     stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(23, 0)));
     stream.push(Orders.SF);
