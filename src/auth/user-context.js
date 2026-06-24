@@ -60,9 +60,9 @@ class UserContext {
       LINES: '24',
       COLUMNS: '80',
       
-      // ロケール（UTF-8対応、エラー回避のためC.UTF-8を使用）
-      LANG: 'C.UTF-8',
-      LC_ALL: 'C.UTF-8',
+      // ロケール（日本語対応）
+      LANG: 'ja_JP.UTF-8',
+      LC_ALL: 'ja_JP.UTF-8',
       
       // その他
       PWD: this.cwd,
