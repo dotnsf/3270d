@@ -75,6 +75,11 @@ if (process.env.NODE_ENV !== 'production') {
   logger.level = 'debug';
 }
 
+// LOG_LEVEL環境変数でログレベルを上書き
+if (process.env.LOG_LEVEL) {
+  logger.level = process.env.LOG_LEVEL;
+}
+
 module.exports = logger;
 
 // Made with Bob
