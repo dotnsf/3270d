@@ -67,6 +67,9 @@ class Connection extends EventEmitter {
         logger.info(`Negotiation complete for ${this.id}: ${this.terminalType}`);
         this.emit('negotiated', this.terminalType);
       }
+    } else if (this.state === 'negotiated') {
+      // ネゴシエーション完了後、ready状態になるまでデータを無視
+      logger.debug(`Ignoring data in negotiated state for ${this.id}`);
     } else if (this.state === 'ready' || this.state === 'authenticated') {
       // ターミナルハンドラーにデータを渡す
       if (this.terminalHandler) {
