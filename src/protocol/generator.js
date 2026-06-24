@@ -167,8 +167,9 @@ class DataStreamGenerator {
             stream.push(...BufferAddress.encode(addr));
           }
 
-          // 文字を追加（ASCIIコード）
-          stream.push(cell.char.charCodeAt(0));
+          // 文字をEBCDICに変換して追加
+          const ebcdic = this.converter.utf8ToEbcdic(cell.char);
+          stream.push(ebcdic[0]);
         }
       }
     }
