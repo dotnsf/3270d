@@ -71,15 +71,26 @@ class Connection extends EventEmitter {
       // ネゴシエーション完了後、ready状態になるまでデータを無視
       logger.debug(`Ignoring data in negotiated state for ${this.id}`);
     } else if (this.state === 'ready' || this.state === 'authenticated') {
-      // ターミナルハンドラーにデータを渡す
-      if (this.terminalHandler) {
-        this.terminalHandler.handleData(data).then((response) => {
+      // Telnetコマンド（IAC）をチェック
+      if (data.length > 0 && data[0] === 0xFF) {
+        // Telnetネゴシエーションまたはサブネゴシエーション
+        logger.debug(`Received Telnet command in ready state for ${this.id}, processing`);
+        this.options.process(data, (response) => {
           if (response) {
-            this.write(response);
+            this.socket.write(response);
           }
-        }).catch((error) => {
-          logger.error(`Error handling terminal data for ${this.id}:`, error);
         });
+      } else {
+        // 3270データストリーム - ターミナルハンドラーにデータを渡す
+        if (this.terminalHandler) {
+          this.terminalHandler.handleData(data).then((response) => {
+            if (response) {
+              this.write(response);
+            }
+          }).catch((error) => {
+            logger.error(`Error handling terminal data for ${this.id}:`, error);
+          });
+        }
       }
     } else {
       // 通常のデータ
