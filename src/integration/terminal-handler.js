@@ -48,6 +48,7 @@ class TerminalHandler {
     this.converter = new Converter();
     
     this.lastScreen = null; // 最後に送信した画面内容
+    this.clearOnNextOutput = false; // 次のPTY出力で画面をクリアするフラグ
     
     logger.info('TerminalHandler created', {
       connectionId: connection.id
@@ -212,12 +213,11 @@ class TerminalHandler {
     const command = parsed.fields[0]?.value?.trim() || '';
     
     if (!command) {
-      // 空のEnterキー - 改行だけを送信して画面を再描画
+      // 空のEnterキー - 改行だけを送信
       if (this.pty) {
         this.pty.write('\n');
       }
-      // 現在の画面を返す
-      return this.renderScreen();
+      return null; // 画面更新はPTY出力で行う
     }
     
     logger.debug('Command entered', {
@@ -225,16 +225,16 @@ class TerminalHandler {
       command
     });
     
-    // 画面をクリア（コマンド実行前）
-    this.screenBuffer.clear();
+    // 次のPTY出力で画面をクリアするフラグを設定
+    this.clearOnNextOutput = true;
     
     // PTYにコマンドを送信
     if (this.pty) {
       this.pty.write(command + '\n');
     }
     
-    // 画面を再描画
-    return this.renderScreen();
+    // 画面更新はPTY出力で行うため、nullを返す
+    return null;
   }
   
   /**
@@ -357,6 +357,12 @@ class TerminalHandler {
       connectionId: this.connection.id,
       length: data.length
     });
+    
+    // コマンド実行後の最初の出力で画面をクリア
+    if (this.clearOnNextOutput) {
+      this.screenBuffer.clear();
+      this.clearOnNextOutput = false;
+    }
     
     // Bufferを文字列に変換
     let text = typeof data === 'string' ? data : data.toString('utf8');
