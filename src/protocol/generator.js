@@ -195,9 +195,15 @@ class DataStreamGenerator {
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Username:');
 
-    // ユーザー名入力フィールド (行5, 列20)
+    // ユーザー名入力フィールド (行5, 列20) - 最大20文字
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getInput()));
+    
+    // ユーザー名フィールドの終端 (行5, 列40)
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(5, 40)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
     // パスワードラベル (行7, 列10)
     stream.push(Orders.SBA);
@@ -206,9 +212,15 @@ class DataStreamGenerator {
     stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
     this.writeText(stream, 'Password:');
 
-    // パスワード入力フィールド (行7, 列20)
+    // パスワード入力フィールド (行7, 列20) - 最大20文字
     stream.push(Orders.SF);
     stream.push(FieldAttribute.encode(FieldAttribute.getHidden()));
+    
+    // パスワードフィールドの終端 (行7, 列40)
+    stream.push(Orders.SBA);
+    stream.push(...BufferAddress.encode(BufferAddress.fromRowCol(7, 40)));
+    stream.push(Orders.SF);
+    stream.push(FieldAttribute.encode(FieldAttribute.getProtected()));
 
     // カーソルをユーザー名フィールドに配置
     stream.push(Orders.SBA);
