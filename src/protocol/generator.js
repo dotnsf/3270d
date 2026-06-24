@@ -62,7 +62,7 @@ class DataStreamGenerator {
     // EOR (End of Record)
     stream.push(this.IAC, this.EOR);
 
-    return this.escapeIAC(stream);
+    return Buffer.from(stream);
   }
 
   /**
@@ -99,7 +99,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return this.escapeIAC(stream);
+    return Buffer.from(stream);
   }
 
   /**
@@ -248,7 +248,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return this.escapeIAC(stream);
+    return Buffer.from(stream);
   }
 
   /**
@@ -287,7 +287,7 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return this.escapeIAC(stream);
+    return Buffer.from(stream);
   }
 
   /**
@@ -326,20 +326,19 @@ class DataStreamGenerator {
     // EOR
     stream.push(this.IAC, this.EOR);
 
-    return this.escapeIAC(stream);
+    return Buffer.from(stream);
   }
 
   /**
-   * テキストを書き込み（ASCIIで送信）
-   * TN3270では、多くの実装がテキストをASCIIで送信する
+   * テキストを書き込み（EBCDICに変換）
    * @param {Array} stream - 出力ストリーム
    * @param {string} text - テキスト
    */
   writeText(stream, text) {
-    // UTF-8からASCIIに変換（ASCIIはUTF-8と互換性がある）
-    const ascii = Buffer.from(text, 'utf8');
-    for (let i = 0; i < ascii.length; i++) {
-      stream.push(ascii[i]);
+    // UTF-8からEBCDICに変換
+    const ebcdic = this.converter.utf8ToEbcdic(text);
+    for (let i = 0; i < ebcdic.length; i++) {
+      stream.push(ebcdic[i]);
     }
   }
 
