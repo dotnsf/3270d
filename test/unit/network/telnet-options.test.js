@@ -3,7 +3,7 @@
  */
 const TelnetOptions = require('../../../src/network/telnet-options');
 
-// TelnetコマンチE
+// Telnetコマンド
 const IAC = 255;
 const WILL = 251;
 const WONT = 252;
@@ -193,3 +193,4 @@ describe('TelnetOptions', () => {
   });
 });
 
+// Made with Bob
