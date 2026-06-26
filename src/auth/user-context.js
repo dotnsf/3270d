@@ -56,7 +56,7 @@ class UserContext {
       PATH: '/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin',
       
       // 端末情報
-      TERM: 'IBM-3279-2-E',
+      TERM: 'xterm',
       LINES: '24',
       COLUMNS: '80',
       

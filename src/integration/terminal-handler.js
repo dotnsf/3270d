@@ -375,6 +375,9 @@ class TerminalHandler {
     // Bufferを文字列に変換
     let text = typeof data === 'string' ? data : data.toString('utf8');
     
+    // \r\n を \n に正規化し、単独の \r も \n に変換（カーソル行頭復帰を改行として扱う）
+    text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
     // ANSIエスケープシーケンスを除去
     text = text
       .replace(/\x1b\[[0-9;]*m/g, '')           // 色コード (CSI m)
@@ -382,7 +385,7 @@ class TerminalHandler {
       .replace(/\x1b\][^\x07]*\x07/g, '')       // OSCシーケンス
       .replace(/\x1b[=>]/g, '')                 // キーパッドモード
       .replace(/\x1b\([0B]/g, '')               // 文字セット選択
-      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ''); // 制御文字（\t, \n, \r以外）
+      .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ''); // 制御文字（\t, \n以外）
     
     // 空の場合は何もしない
     if (!text) {
@@ -394,7 +397,7 @@ class TerminalHandler {
     let cursor = this.screenBuffer.getCursor();
     
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].replace(/\r/g, ''); // CRを除去
+      const line = lines[i]; // \r は既に上で正規化済み
       
       if (line) {
         // 行の内容を書き込み
