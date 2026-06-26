@@ -34,4 +34,6 @@ build/
 # Test
 test-results/
 
-# Made with Bob
+# other
+.memo.*
+

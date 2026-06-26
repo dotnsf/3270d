@@ -24,7 +24,7 @@ class TelnetServer extends EventEmitter {
   }
 
   /**
-   * サーバーを起動
+   * サーバ�Eを起勁E
    */
   async start() {
     return new Promise((resolve, reject) => {
@@ -47,7 +47,7 @@ class TelnetServer extends EventEmitter {
   }
 
   /**
-   * サーバーを停止
+   * サーバ�Eを停止
    */
   async stop() {
     return new Promise((resolve) => {
@@ -68,10 +68,10 @@ class TelnetServer extends EventEmitter {
   }
 
   /**
-   * 新しい接続を処理
+   * 新しい接続を処琁E
    */
   handleConnection(socket) {
-    // 最大接続数チェック
+    // 最大接続数チェチE��
     if (this.connections.size >= this.options.maxConnections) {
       logger.warn(`Max connections (${this.options.maxConnections}) reached, rejecting connection from ${socket.remoteAddress}`);
       socket.end();
@@ -94,7 +94,7 @@ class TelnetServer extends EventEmitter {
       logger.error(`Connection ${connection.id} error:`, error);
     });
 
-    // ネゴシエーション完了後にターミナルセッションを開始
+    // ネゴシエーション完亁E��にターミナルセチE��ョンを開姁E
     connection.on('negotiated', async (terminalType) => {
       try {
         logger.info(`Starting terminal session for ${connection.id} (${terminalType})`);
@@ -105,7 +105,7 @@ class TelnetServer extends EventEmitter {
       }
     });
 
-    // Telnetネゴシエーションを開始
+    // Telnetネゴシエーションを開姁E
     connection.negotiate().catch((error) => {
       logger.error(`Negotiation failed for ${connection.id}:`, error);
       connection.close();
@@ -115,21 +115,21 @@ class TelnetServer extends EventEmitter {
   }
 
   /**
-   * アクティブな接続数を取得
+   * アクチE��ブな接続数を取征E
    */
   getConnectionCount() {
     return this.connections.size;
   }
 
   /**
-   * すべての接続を取得
+   * すべての接続を取征E
    */
   getConnections() {
     return Array.from(this.connections.values());
   }
 
   /**
-   * 接続を取得
+   * 接続を取征E
    */
   getConnection(id) {
     return this.connections.get(id);
@@ -138,4 +138,3 @@ class TelnetServer extends EventEmitter {
 
 module.exports = TelnetServer;
 
-// Made with Bob

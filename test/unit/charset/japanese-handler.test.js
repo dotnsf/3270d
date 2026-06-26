@@ -1,5 +1,5 @@
 /**
- * JapaneseHandler モジュールのユニットテスト
+ * JapaneseHandler モジュールのユニットテスチE
  */
 
 const japaneseHandler = require('../../../src/charset/japanese-handler');
@@ -7,8 +7,8 @@ const japaneseHandler = require('../../../src/charset/japanese-handler');
 describe('JapaneseHandler', () => {
   describe('isDBCS', () => {
     test('should detect hiragana as DBCS', () => {
-      expect(japaneseHandler.isDBCS('あ')).toBe(true);
-      expect(japaneseHandler.isDBCS('ん')).toBe(true);
+      expect(japaneseHandler.isDBCS('ぁE)).toBe(true);
+      expect(japaneseHandler.isDBCS('めE)).toBe(true);
     });
 
     test('should detect katakana as DBCS', () => {
@@ -18,7 +18,7 @@ describe('JapaneseHandler', () => {
 
     test('should detect kanji as DBCS', () => {
       expect(japaneseHandler.isDBCS('漢')).toBe(true);
-      expect(japaneseHandler.isDBCS('字')).toBe(true);
+      expect(japaneseHandler.isDBCS('孁E)).toBe(true);
     });
 
     test('should detect ASCII as not DBCS', () => {
@@ -34,8 +34,8 @@ describe('JapaneseHandler', () => {
 
   describe('getCharWidth', () => {
     test('should return 2 for hiragana', () => {
-      expect(japaneseHandler.getCharWidth('あ')).toBe(2);
-      expect(japaneseHandler.getCharWidth('ん')).toBe(2);
+      expect(japaneseHandler.getCharWidth('ぁE)).toBe(2);
+      expect(japaneseHandler.getCharWidth('めE)).toBe(2);
     });
 
     test('should return 2 for katakana', () => {
@@ -45,7 +45,7 @@ describe('JapaneseHandler', () => {
 
     test('should return 2 for kanji', () => {
       expect(japaneseHandler.getCharWidth('漢')).toBe(2);
-      expect(japaneseHandler.getCharWidth('字')).toBe(2);
+      expect(japaneseHandler.getCharWidth('孁E)).toBe(2);
     });
 
     test('should return 1 for ASCII', () => {
@@ -67,13 +67,13 @@ describe('JapaneseHandler', () => {
 
     test('should calculate width for Japanese text', () => {
       expect(japaneseHandler.getDisplayWidth('こんにちは')).toBe(10);
-      expect(japaneseHandler.getDisplayWidth('カタカナ')).toBe(8);
-      expect(japaneseHandler.getDisplayWidth('漢字')).toBe(4);
+      expect(japaneseHandler.getDisplayWidth('カタカチE)).toBe(8);
+      expect(japaneseHandler.getDisplayWidth('漢孁E)).toBe(4);
     });
 
     test('should calculate width for mixed text', () => {
       expect(japaneseHandler.getDisplayWidth('Hello世界')).toBe(9);
-      expect(japaneseHandler.getDisplayWidth('ABC漢字123')).toBe(10);
+      expect(japaneseHandler.getDisplayWidth('ABC漢孁E23')).toBe(10);
     });
 
     test('should return 0 for empty string', () => {
@@ -95,7 +95,7 @@ describe('JapaneseHandler', () => {
     });
 
     test('should handle DBCS at boundary', () => {
-      // 幅5で「こんに」(6)は入らないので「こん」(4)まで
+      // 幁Eで「こんに、E6)は入らなぁE�Eで「こん、E4)まで
       const result = japaneseHandler.truncate('こんにちは', 5);
       expect(result.text).toBe('こん');
       expect(result.width).toBe(4);
@@ -103,7 +103,7 @@ describe('JapaneseHandler', () => {
 
     test('should handle mixed text', () => {
       const result = japaneseHandler.truncate('Hello世界', 7);
-      expect(result.text).toBe('Hello世');
+      expect(result.text).toBe('Hello丁E);
       expect(result.width).toBe(7);
     });
   });
@@ -200,16 +200,16 @@ describe('JapaneseHandler', () => {
   describe('containsJapanese', () => {
     test('should detect hiragana', () => {
       expect(japaneseHandler.containsJapanese('こんにちは')).toBe(true);
-      expect(japaneseHandler.containsJapanese('Hello あ World')).toBe(true);
+      expect(japaneseHandler.containsJapanese('Hello ぁEWorld')).toBe(true);
     });
 
     test('should detect katakana', () => {
-      expect(japaneseHandler.containsJapanese('カタカナ')).toBe(true);
+      expect(japaneseHandler.containsJapanese('カタカチE)).toBe(true);
       expect(japaneseHandler.containsJapanese('Hello ア World')).toBe(true);
     });
 
     test('should detect kanji', () => {
-      expect(japaneseHandler.containsJapanese('漢字')).toBe(true);
+      expect(japaneseHandler.containsJapanese('漢孁E)).toBe(true);
       expect(japaneseHandler.containsJapanese('Hello 漢 World')).toBe(true);
     });
 
@@ -221,8 +221,8 @@ describe('JapaneseHandler', () => {
 
   describe('getCharType', () => {
     test('should identify hiragana', () => {
-      expect(japaneseHandler.getCharType('あ')).toBe('hiragana');
-      expect(japaneseHandler.getCharType('ん')).toBe('hiragana');
+      expect(japaneseHandler.getCharType('ぁE)).toBe('hiragana');
+      expect(japaneseHandler.getCharType('めE)).toBe('hiragana');
     });
 
     test('should identify katakana', () => {
@@ -232,7 +232,7 @@ describe('JapaneseHandler', () => {
 
     test('should identify kanji', () => {
       expect(japaneseHandler.getCharType('漢')).toBe('kanji');
-      expect(japaneseHandler.getCharType('字')).toBe('kanji');
+      expect(japaneseHandler.getCharType('孁E)).toBe('kanji');
     });
 
     test('should identify ASCII', () => {
@@ -273,4 +273,3 @@ describe('JapaneseHandler', () => {
   });
 });
 
-// Made with Bob
