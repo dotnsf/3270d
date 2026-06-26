@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Screen Buffer
  * 3270画面バッファの管理
  */
@@ -431,5 +431,3 @@ class ScreenBuffer {
 }
 
 module.exports = ScreenBuffer;
-
-// Made with Bob

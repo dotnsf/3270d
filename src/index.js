@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270d - TN3270 Server
  * Entry Point
  */
@@ -212,5 +212,3 @@ if (require.main === module) {
 }
 
 module.exports = Server3270d;
-
-// Made with Bob

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PTY Manager
  * 疑似端末の管理とシェルプロセス制御
  */
@@ -190,5 +190,3 @@ class PTY {
 
 module.exports = PTYManager;
 module.exports.PTY = PTY;
-
-// Made with Bob

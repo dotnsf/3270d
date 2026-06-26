@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Data Stream Definitions
  * 3270データストリームの定義
  */
@@ -196,5 +196,3 @@ module.exports = {
   isOrder,
   isCommand
 };
-
-// Made with Bob

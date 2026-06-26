@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Telnet Server
  * TCP接続を受け付け、Telnetプロトコルのネゴシエーションを行う
  */
@@ -137,5 +137,3 @@ class TelnetServer extends EventEmitter {
 }
 
 module.exports = TelnetServer;
-
-// Made with Bob

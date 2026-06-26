@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Telnet Options Handler
  * Telnetオプションのネゴシエーション処理
  */
@@ -258,5 +258,3 @@ class TelnetOptions {
 }
 
 module.exports = TelnetOptions;
-
-// Made with Bob

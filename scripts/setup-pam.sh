@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 #
 # PAM設定スクリプト
 # 3270dサービス用のPAM設定ファイルを作成します
@@ -118,5 +118,3 @@ echo "注意事項:"
 echo "- PAM認証を使用するには、サーバーを実行するユーザーに適切な権限が必要です"
 echo "- 開発環境では NODE_ENV=development で起動すると、PAM認証をスキップできます"
 echo ""
-
-# Made with Bob

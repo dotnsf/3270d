@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Data Stream Parser
  * 3270データストリームの解析
  */
@@ -204,5 +204,3 @@ class DataStreamParser {
 }
 
 module.exports = DataStreamParser;
-
-// Made with Bob

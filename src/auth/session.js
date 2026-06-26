@@ -1,4 +1,4 @@
-/**
+﻿/**
  * セッション管理モジュール
  * 
  * 認証済みユーザーのセッション情報を管理します。
@@ -420,5 +420,3 @@ class SessionManager {
 
 module.exports = Session;
 module.exports.SessionManager = SessionManager;
-
-// Made with Bob

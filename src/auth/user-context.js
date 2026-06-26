@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ユーザーコンテキストモジュール
  * 
  * 認証済みユーザーの実行コンテキストを管理します。
@@ -251,5 +251,3 @@ class UserContext {
 }
 
 module.exports = UserContext;
-
-// Made with Bob

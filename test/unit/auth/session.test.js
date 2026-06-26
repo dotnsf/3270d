@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Session モジュールのユニットテスト
  */
 
@@ -270,5 +270,3 @@ describe('SessionManager', () => {
     });
   });
 });
-
-// Made with Bob

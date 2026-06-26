@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 認証処理モジュール
  * 
  * ユーザー認証のメインロジックを提供します。
@@ -382,5 +382,3 @@ class Authenticator {
 
 module.exports = Authenticator;
 module.exports.AuthState = AuthState;
-
-// Made with Bob

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * PAM認証モジュール
  * 
  * Linux PAM (Pluggable Authentication Modules) を使用したユーザー認証を提供します。
@@ -269,5 +269,3 @@ class PAMAuth {
 }
 
 module.exports = PAMAuth;
-
-// Made with Bob

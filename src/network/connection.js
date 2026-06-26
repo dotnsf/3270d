@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Connection
  * 個別の接続を管理
  */
@@ -225,5 +225,3 @@ class Connection extends EventEmitter {
 }
 
 module.exports = Connection;
-
-// Made with Bob

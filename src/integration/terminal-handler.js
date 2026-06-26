@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ターミナルハンドラーモジュール
  * 
  * 3270プロトコル、PTY、認証を統合し、
@@ -521,5 +521,3 @@ class TerminalHandler {
 
 module.exports = TerminalHandler;
 module.exports.TerminalState = TerminalState;
-
-// Made with Bob

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * JapaneseHandler モジュールのユニットテスト
  */
 
@@ -272,5 +272,3 @@ describe('JapaneseHandler', () => {
     });
   });
 });
-
-// Made with Bob

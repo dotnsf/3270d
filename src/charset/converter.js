@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Character Set Converter
  * 文字コード変換（EBCDIC ↔ UTF-8）
  */
@@ -277,5 +277,3 @@ class CharsetConverter {
 }
 
 module.exports = CharsetConverter;
-
-// Made with Bob

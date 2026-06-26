@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Field Attribute
  * 3270フィールド属性のエンコード/デコード
  */
@@ -215,5 +215,3 @@ class FieldAttribute {
 }
 
 module.exports = FieldAttribute;
-
-// Made with Bob

@@ -1,4 +1,4 @@
-# Dependencies
+﻿# Dependencies
 node_modules/
 package-lock.json
 
@@ -33,5 +33,3 @@ build/
 
 # Test
 test-results/
-
-# Made with Bob

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Buffer Address
  * 3270バッファアドレスのエンコード/デコード
  */
@@ -115,5 +115,3 @@ class BufferAddress {
 }
 
 module.exports = BufferAddress;
-
-// Made with Bob

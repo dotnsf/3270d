@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * テスト結果フォーマッター
  * 
@@ -184,5 +184,3 @@ function main() {
 
 // 実行
 main();
-
-// Made with Bob

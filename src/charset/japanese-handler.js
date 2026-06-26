@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 日本語処理ハンドラー
  * 
  * 3270端末での日本語表示に特化した処理を提供します。
@@ -381,5 +381,3 @@ class JapaneseHandler {
 
 // シングルトンインスタンスをエクスポート
 module.exports = new JapaneseHandler();
-
-// Made with Bob

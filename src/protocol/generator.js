@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 3270 Data Stream Generator
  * 3270データストリームの生成
  */
@@ -353,5 +353,3 @@ class DataStreamGenerator {
 }
 
 module.exports = DataStreamGenerator;
-
-// Made with Bob

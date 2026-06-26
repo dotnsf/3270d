@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Configuration Manager
  * 設定ファイルと環境変数を管理
  */
@@ -81,5 +81,3 @@ class Config {
 const config = new Config();
 
 module.exports = config;
-
-// Made with Bob

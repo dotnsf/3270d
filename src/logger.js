@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Logger
  * Winstonを使用したロギング
  */
@@ -81,5 +81,3 @@ if (process.env.LOG_LEVEL) {
 }
 
 module.exports = logger;
-
-// Made with Bob

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Telnet Options Test
  */
 const TelnetOptions = require('../../../src/network/telnet-options');
@@ -192,5 +192,3 @@ describe('TelnetOptions', () => {
     });
   });
 });
-
-// Made with Bob

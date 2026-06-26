@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 # 3270d Setup Script
 
 set -e
@@ -67,5 +67,3 @@ echo ""
 echo "Default port: 23 (requires root or CAP_NET_BIND_SERVICE)"
 echo "To use a different port, edit .env file"
 echo ""
-
-# Made with Bob

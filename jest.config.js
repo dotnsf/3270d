@@ -1,4 +1,4 @@
-module.exports = {
+﻿module.exports = {
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
@@ -32,5 +32,3 @@ module.exports = {
     }]
   ]
 };
-
-// Made with Bob
